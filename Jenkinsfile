@@ -1,26 +1,37 @@
 pipeline {
-    agent { label "android" } 
+    agent any 
 
     stages {
-        stage("Fetch Android Timer App") {
+        stage("Fetch Android Web Search App") {
             steps {
-               sh "git clone https://github.com/manguilar22/Android-Timer.git"
-               sh "pwd"  
+               sh "git clone https://github.com/manguilar22/Android-Search.git"
+               
+               sh "ls -ltr"
+               
             }
         }
-        stage("Build Android Timer App") {
+        stage("Build Android Web Search App") {
             steps {
-                sh "pwd"
-                dir("Android-Timer") {
-                    sh "gradle build"
+                
+            
+                dir("Android-Search") {
+                    sh "pwd"
+                    sh "gradle assembleDebug"
                 }
-                sh "ls -ltr"
-            }
-        }
-        stage("Clean Directory") {
-            steps {
-                sh "rm -rf Android-Timer"
+                sh "ls -ltr Android-Search/app/build/outputs/apk/debug/app-debug.apk"
+                
             }
         }
     }
-}
+    
+    
+    post {
+        always {
+            archiveArtifacts artifacts: "Android-Search/app/build/outputs/apk/debug/app-debug.apk", fingerprint: true
+            sh "rm -rf Android-Search"
+        }
+    }
+    
+}    
+    
+
