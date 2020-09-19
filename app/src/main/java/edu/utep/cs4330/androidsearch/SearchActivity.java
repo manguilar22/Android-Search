@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import edu.utep.cs4330.androidsearch.data.model.SearchCode;
+
 public class SearchActivity extends AppCompatActivity {
     private final static String SEARCH = "edu.utep.cs4330.androidsearch.SEARCH";
     private final static String SEARCH_TYPE_CODE = "edu.utep.cs4330.androidsearch.SEARCH_TYPE";
@@ -32,11 +34,30 @@ public class SearchActivity extends AppCompatActivity {
         htmlBanner = findViewById(R.id.htmlBanner);
         proceedButton = findViewById(R.id.proceed);
 
+        String mimeType;
+        switch (savedCodeText) {
+            case "isch":
+                mimeType = SearchCode.IMAGE.toString();
+                break;
+            case "vid":
+                mimeType = SearchCode.VIDEO.toString();
+                break;
+            case "nws":
+                mimeType = SearchCode.NEWS.toString();
+                break;
+            case "bks":
+                mimeType = SearchCode.BOOKS.toString();
+                break;
+            default:
+                mimeType = SearchCode.ALL.toString();
+                break;
+        }
+
 
         htmlBanner.setText(Html.fromHtml(String.format(
                 "<h1> Search Server </h1><br/><p>Search Term: %s</p><br/><p>Type: %s</p>",
                 savedText,
-                savedCodeText)));
+                mimeType)));
 
         proceedButton.setOnClickListener(this::onClickSearchServer);
 
